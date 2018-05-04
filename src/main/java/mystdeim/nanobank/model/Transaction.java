@@ -12,9 +12,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Transaction {
 
-    UUID id;
-    UUID src;
-    UUID dst;
-    BigDecimal vol;
+    public UUID id;
+    public UUID src;
+    public UUID dst;
+    public BigDecimal vol;
 
 }

@@ -97,10 +97,24 @@ public class TransactionsTest {
         }
 
         @Test
-        void testTransferFakeAccount(Vertx vertx, VertxTestContext context) {
+        void testTransferFakeSrcAccount(Vertx vertx, VertxTestContext context) {
             JsonObject jo = new JsonObject()
                     .put("src", UUID.randomUUID().toString())
                     .put("dst", account2.toString())
+                    .put("vol", "50.0");
+            client
+                    .post(port, "localhost", "/api/transaction")
+                    .sendJson(jo, ar -> {
+                        assertEquals(404, ar.result().statusCode());
+                        context.completeNow();
+                    });
+        }
+
+        @Test
+        void testTransferFakeDstAccount(Vertx vertx, VertxTestContext context) {
+            JsonObject jo = new JsonObject()
+                    .put("src", account1.toString())
+                    .put("dst", UUID.randomUUID().toString())
                     .put("vol", "50.0");
             client
                     .post(port, "localhost", "/api/transaction")

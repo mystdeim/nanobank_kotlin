@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
-    UUID id;
-    String person;
-    BigDecimal balance;
+    public UUID id;
+    public String person;
+    public BigDecimal balance;
 }
