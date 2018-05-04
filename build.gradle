@@ -1,0 +1,73 @@
+group 'mystdeim'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.2.+'
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+sourceCompatibility = 1.8
+
+shadowJar {
+    archiveName = "fat.jar"
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': 'mystdeim.nanobank.Main')
+    }
+}
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+ext {
+    vertx = '3.5.+'
+    h2 = '1.4.+'
+    slf4j = '1.7.+'
+    logback = '1.1.+'
+    lombok = '1.16.+'
+    junit = '5.1.+'
+}
+
+dependencies {
+    compile "io.vertx:vertx-core:$vertx"
+    compile "io.vertx:vertx-config:$vertx"
+    compile "io.vertx:vertx-web:$vertx"
+    compile "io.vertx:vertx-jdbc-client:$vertx"
+    compile "com.h2database:h2:$h2"
+    compile "org.slf4j:slf4j-api:$slf4j"
+    compile "ch.qos.logback:logback-classic:$logback"
+    compileOnly "org.projectlombok:lombok:$lombok"
+
+    compile "io.vertx:vertx-lang-kotlin:$vertx"
+    compile "io.vertx:vertx-lang-kotlin-coroutines:$vertx"
+
+    testCompile "org.projectlombok:lombok:$lombok"
+    testCompile "io.vertx:vertx-unit:$vertx"
+    testCompile "io.vertx:vertx-web-client:$vertx"
+    testCompile "org.junit.jupiter:junit-jupiter-engine:$junit"
+    testCompile "io.vertx:vertx-junit5:$vertx"
+}
+
+build.dependsOn shadowJar

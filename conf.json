@@ -1,0 +1,4 @@
+{
+  "http.port": 8081,
+  "db.url": "jdbc:h2:mem:test;database_to_upper=false"
+}
