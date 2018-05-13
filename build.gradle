@@ -47,6 +47,10 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+}
+
 ext {
     vertx = '3.5.+'
     h2 = '1.4.+'
@@ -70,7 +74,7 @@ dependencies {
     compile "io.vertx:vertx-lang-kotlin-coroutines:$vertx"
 
     testCompile "org.projectlombok:lombok:$lombok"
-    testCompile "io.vertx:vertx-unit:$vertx"
+//    testCompile "io.vertx:vertx-unit:$vertx"
     testCompile "io.vertx:vertx-web-client:$vertx"
     testCompile "org.junit.jupiter:junit-jupiter-engine:$junit"
     testCompile "io.vertx:vertx-junit5:$vertx"
