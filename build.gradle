@@ -67,7 +67,7 @@ dependencies {
     compileOnly "org.projectlombok:lombok:$lombok"
 
     compile "io.vertx:vertx-lang-kotlin:$vertx"
-    compile "io.vertx:vertx-lang-kotlin-coroutine:$vertx"
+    compile "io.vertx:vertx-lang-kotlin-coroutines:$vertx"
 
     testCompile "org.projectlombok:lombok:$lombok"
     testCompile "io.vertx:vertx-unit:$vertx"
