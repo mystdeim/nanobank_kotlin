@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory
 import java.math.BigDecimal
 
 import java.util.concurrent.CompletableFuture
-import kotlin.reflect.KFunction1
 
 
 class WebVerticle : CoroutineVerticle() {

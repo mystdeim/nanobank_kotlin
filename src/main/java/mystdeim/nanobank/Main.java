@@ -10,7 +10,7 @@ import mystdeim.nanobank.util.MessageCodecs;
 import mystdeim.nanobank.verticle.AccountVerticle;
 import mystdeim.nanobank.verticle.DBInitVerticle;
 import mystdeim.nanobank.verticle.TransactionVerticle;
-import mystdeim.nanobank.verticle.WebVerticle;
+//import mystdeim.nanobank.verticle.WebVerticle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class Main {
                 .thenCompose(dopts ->
                     deploy(vertx, DBInitVerticle.class, dopts)
 //                            .thenAccept(vertx::undeploy)
-                            .thenCompose(a -> deploy(vertx, WebVerticle.class, dopts))
+//                            .thenCompose(a -> deploy(vertx, WebVerticle.class, dopts))
                             .thenCompose(a -> deploy(vertx, AccountVerticle.class, dopts))
                             .thenCompose(a -> deploy(vertx, TransactionVerticle.class, dopts))
                 ).exceptionally(ex -> {

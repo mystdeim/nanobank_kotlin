@@ -6,12 +6,10 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import lombok.extern.slf4j.Slf4j;
 import mystdeim.nanobank.model.Account;
 
 import java.util.UUID;
 
-@Slf4j
 public class AccountVerticle extends JDBCVerticle {
 
     public static final String GET_ACCOUNTS = "get_accounts";
@@ -26,12 +24,10 @@ public class AccountVerticle extends JDBCVerticle {
         eventBus.consumer(GET_ACCOUNTS, this::getAccounts);
         eventBus.consumer(CREATE_ACCOUNT, this::createAccount);
         eventBus.consumer(DELETE_ACCOUNT, this::deleteAccount);
-        log.info("{} was deployed", this.getClass().getSimpleName());
     }
 
     @Override
     public void stop() {
-        log.info("AccountVerticle was undeployed");
     }
 
     void getAccount(Message<String> msg) {
@@ -44,7 +40,6 @@ public class AccountVerticle extends JDBCVerticle {
                     }
                 })
                 .exceptionally(ex -> {
-                    log.error("Get account failed: ", ex);
                     return null;
                 });
     }
@@ -55,7 +50,6 @@ public class AccountVerticle extends JDBCVerticle {
                     msg.reply(new JsonArray(rows.getRows()));
                 })
                 .exceptionally(ex -> {
-                    log.error("Get accounts failed: ", ex);
                     return null;
                 });
     }
@@ -73,7 +67,6 @@ public class AccountVerticle extends JDBCVerticle {
                         .add(account.getBalance().toString()))
                 .thenRun(() -> msg.reply(new JsonObject().put("id", account.getId().toString())))
                 .exceptionally(ex -> {
-                    log.error("Create failed: ", ex);
                     msg.reply(null);
                     return null;
                 });
@@ -86,7 +79,6 @@ public class AccountVerticle extends JDBCVerticle {
                     msg.reply(true);
                 })
                 .exceptionally(ex -> {
-                    log.error("Delete failed: ", ex);
                     msg.reply(false);
                     return null;
                 });

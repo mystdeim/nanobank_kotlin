@@ -6,12 +6,10 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import lombok.extern.slf4j.Slf4j;
 import mystdeim.nanobank.model.Transaction;
 
 import java.util.UUID;
 
-@Slf4j
 public class TransactionVerticle extends JDBCVerticle {
 
     public static final String GET_TRANSACTIONS = "get_transactions";
@@ -22,7 +20,6 @@ public class TransactionVerticle extends JDBCVerticle {
         EventBus eventBus = vertx.eventBus();
         eventBus.consumer(GET_TRANSACTIONS, this::getTransactions);
         eventBus.consumer(CREATE_TRANSACTION, this::createTransaction);
-        log.info("{} was deployed", this.getClass().getSimpleName());
     }
 
     void getTransactions(Message<String> msg) {
@@ -32,7 +29,6 @@ public class TransactionVerticle extends JDBCVerticle {
                     msg.reply(new JsonArray(rows.getRows()));
                 })
                 .exceptionally(ex -> {
-                    log.error("Get transaction failed: ", ex);
                     msg.reply(null);
                     return null;
                 });
@@ -63,7 +59,6 @@ public class TransactionVerticle extends JDBCVerticle {
         }).thenCompose(con -> commit(con))
           .thenRun(() -> msg.reply(new JsonObject().put("id", id.toString())))
           .exceptionally(ex -> {
-            log.error("Transfer failed: ", ex);
             msg.reply(null);
             return null;
         });

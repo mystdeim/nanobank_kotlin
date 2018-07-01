@@ -13,7 +13,7 @@ buildscript {
     }
 }
 
-
+apply plugin: 'kotlin-kapt'
 apply plugin: 'java'
 apply plugin: 'kotlin'
 apply plugin: 'com.github.johnrengelman.shadow'
@@ -43,6 +43,7 @@ compileKotlin {
 }
 
 repositories {
+    mavenLocal()
     jcenter()
     mavenCentral()
 }
@@ -53,6 +54,7 @@ test {
 
 ext {
     vertx = '3.5.+'
+    kvertx = '3.6.0-SNAPSHOT'
     h2 = '1.4.+'
     slf4j = '1.7.+'
     logback = '1.1.+'
@@ -68,10 +70,18 @@ dependencies {
     compile "com.h2database:h2:$h2"
     compile "org.slf4j:slf4j-api:$slf4j"
     compile "ch.qos.logback:logback-classic:$logback"
-    compileOnly "org.projectlombok:lombok:$lombok"
 
-    compile "io.vertx:vertx-lang-kotlin:$vertx"
-    compile "io.vertx:vertx-lang-kotlin-coroutines:$vertx"
+    compile "io.vertx:vertx-service-proxy:$vertx"
+    compile "io.vertx:vertx-lang-js:$vertx"
+    compile "io.vertx:vertx-sockjs-service-proxy:$vertx"
+    compile "io.vertx:vertx-codegen:$vertx"
+//    compileOnly "io.vertx:vertx-codegen:$vertx:processor"
+    kapt "io.vertx:vertx-codegen:$vertx:processor"
+//    compileOnly "io.vertx:vertx-lang-kotlin-codegen:$kvertx"
+    kapt "io.vertx:vertx-lang-kotlin-codegen:$kvertx"
+
+//    compile "io.vertx:vertx-lang-kotlin:$vertx"
+    compile "io.vertx:vertx-lang-kotlin-coroutines:$kvertx"
 
     testCompile "org.projectlombok:lombok:$lombok"
 //    testCompile "io.vertx:vertx-unit:$vertx"
@@ -80,4 +90,40 @@ dependencies {
     testCompile "io.vertx:vertx-junit5:$vertx"
 }
 
-build.dependsOn shadowJar
+//build.dependsOn shadowJar
+
+
+// for java version codegen
+//task annotationProcessing(type: JavaCompile, group: 'build') { // codegen
+//    source = sourceSets.main.kotlin
+//    classpath = configurations.compile + configurations.compileOnly
+//    destinationDir = project.file('src/main/generated')
+//    options.compilerArgs = [
+//            "-proc:only",
+//            "-processor", "io.vertx.codegen.CodeGenProcessor",
+//            "-AoutputDirectory=${project.projectDir}/src/main"
+//    ]
+//}
+//
+//compileJava {
+//    targetCompatibility = 1.8
+//    sourceCompatibility = 1.8
+//
+//    dependsOn annotationProcessing
+//}
+//
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs += 'src/main/generated'
+//        }
+//    }
+//}
+
+// for kapt
+sourceSets {
+    generated.java {
+        srcDir file("build/generated/source/kapt/main")
+    }
+    main.java.srcDirs += generated.java.srcDirs
+}
